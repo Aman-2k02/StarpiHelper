@@ -1,0 +1,150 @@
+/* VideoTileGallery.css */
+
+.gallery-container {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+.gallery-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.gallery-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.gallery-title {
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.btn-reset {
+  padding: 6px 14px;
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-reset:hover {
+  background-color: #d9363e;
+}
+
+.input-section {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
+  background-color: #fafafa;
+}
+
+.input-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.input-title {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.json-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  resize: vertical;
+  font-family: monospace;
+  margin-bottom: 10px;
+}
+
+.btn-load {
+  padding: 6px 14px;
+  background-color: #1890ff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-load:hover {
+  background-color: #096dd9;
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #ff4d4f;
+  margin-bottom: 10px;
+}
+
+.video-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;  
+}
+
+.video-table th,
+.video-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+  vertical-align: middle;
+  color: black;
+}
+
+.video-table th {
+  background-color: #1d1c1c;
+  font-weight: 600;
+  color: white;
+}
+
+.video-table a {
+  color: #1890ff;
+  text-decoration: none;
+}
+
+.video-table a:hover {
+  text-decoration: underline;
+}
+
+.btn-copy {
+  padding: 4px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #497036;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-copy:hover {
+  background-color: #389e0d;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  color: #888;
+  font-size: 18px;
+  text-align: center;
+}
