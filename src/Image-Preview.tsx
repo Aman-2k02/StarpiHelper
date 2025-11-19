@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Copy, Check, FileText, Upload, AlertCircle } from 'lucide-react';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import './ImageTileGallery.css';
 
 const ImageTileGallery = ({ injectedJson }: { injectedJson?: string }) => {
@@ -33,12 +35,38 @@ const ImageTileGallery = ({ injectedJson }: { injectedJson?: string }) => {
       setData(dataArray);
       setError('');
       setShowInput(false);
-
-      appendToGist(dataArray, jsonInputTitle);
     } catch {
-      setError('Invalid JSON format. Please check your input.');
+      toast.error("Invalid JSON format!", { position: "top-right" });
     }
+    setJsonInputTitle('');
   };
+  const handleJsonSave = () => {
+    try {
+      if (!jsonInputTitle.trim()) {
+        toast.error("Title is required!", { position: "top-right" });
+        return;
+      }
+
+      if (!jsonInput.trim()) {
+        toast.error("JSON input cannot be empty!", { position: "top-right" });
+        return;
+      }
+
+      const parsed = JSON.parse(jsonInput);
+      const dataArray = Array.isArray(parsed) ? parsed : [parsed];
+      appendToGist(dataArray, jsonInputTitle);
+      toast.success("Gallery Loaded Successfully!", {
+        position: "top-right",
+      });
+    } catch {
+      toast.error("Invalid JSON format!", { position: "top-right" });
+
+
+    }
+
+  }
+
+
 
   const copyToClipboard = async (url: string, index: number) => {
     try {
@@ -92,7 +120,6 @@ const ImageTileGallery = ({ injectedJson }: { injectedJson?: string }) => {
       })
     });
 
-    console.log("Gist updated successfully!");
   };
 
   return (
@@ -115,6 +142,7 @@ const ImageTileGallery = ({ injectedJson }: { injectedJson?: string }) => {
               <h2 className="input-title">Load JSON Data</h2>
             </div>
 
+
             <textarea
               value={jsonInput}
               onChange={(e) => setJsonInput(e.target.value)}
@@ -129,12 +157,14 @@ const ImageTileGallery = ({ injectedJson }: { injectedJson?: string }) => {
               className="json-textarea"
             />
 
-            <textarea
+            <input
               value={jsonInputTitle}
               onChange={(e) => setJsonInputTitle(e.target.value)}
-              placeholder='Title'
-              className="json-textarea"
+              placeholder="Title"
+              className="json-input"
+              required
             />
+
             {error && (
               <div className="error-message">
                 <AlertCircle size={20} />
@@ -142,9 +172,17 @@ const ImageTileGallery = ({ injectedJson }: { injectedJson?: string }) => {
               </div>
             )}
 
-            <button onClick={handleJsonSubmit} className="btn-load">
-              Load Gallery
-            </button>
+            <div className="d-flex gap-2">
+              <button onClick={handleJsonSubmit} className="btn-load">
+                Load Gallery
+              </button>
+
+              <button onClick={handleJsonSave} className="btn-load">
+                Save Gallery
+              </button>
+            </div>
+
+
           </div>
         )}
 
@@ -211,7 +249,10 @@ const ImageTileGallery = ({ injectedJson }: { injectedJson?: string }) => {
           </div>
         )}
       </div>
+      <ToastContainer />
+
     </div>
+
   );
 };
 

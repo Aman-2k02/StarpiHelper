@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Papa from "papaparse";
 import { Copy, Check } from "lucide-react";
+import { toast } from "react-toastify";
 
 const GalleryTableViewer = () => {
   const [entries, setEntries] = useState<any[]>([]);
@@ -35,8 +36,7 @@ const GalleryTableViewer = () => {
     setError("");
     try {
       const text = await fetchLatestGistContent();
-      if (!text) throw new Error("No content");
-
+      if (!text) toast.error("No Data Found !", { position: "top-right" });
       const parsed = Papa.parse(text, {
         header: true,
         skipEmptyLines: true,
@@ -76,57 +76,61 @@ const GalleryTableViewer = () => {
   };
 
   return (
-    <div>
-      <h2>Gallery Table Viewer</h2>
+    <div className="container mt-4">
+      <h2 className="mb-3">Gallery Table Viewer</h2>
 
-      <button onClick={fetchGistData} className="btn-load">
+      <button
+        onClick={fetchGistData}
+        className="btn btn-primary mb-3"
+        disabled={loading}
+      >
         {loading ? "Loading..." : "Load Gallery from Gist"}
       </button>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p className="text-danger">{error}</p>}
 
       {entries.length > 0 && (
-        <table
-          style={{
-            width: "100%",
-            borderCollapse: "collapse",
-            marginTop: "20px",
-          }}
-        >
-          <thead>
-            <tr style={{ borderBottom: "2px solid #ccc" }}>
-              <th style={{ textAlign: "left", padding: "8px" }}>Timestamp</th>
-              <th style={{ textAlign: "left", padding: "8px" }}>Title</th>
-              <th style={{ textAlign: "left", padding: "8px" }}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {entries.map((entry, index) => (
-              <tr key={index} style={{ borderBottom: "1px solid #eee" }}>
-                <td style={{ padding: "8px" }}>{entry.timestamp}</td>
-                <td style={{ padding: "8px" }}>{entry.title}</td>
-                <td style={{ padding: "8px" }}>
-                  <button
-                    style={{ cursor: "pointer" }}
-                    onClick={() => copyJsonToClipboard(entry.json, index)}
-                  >
-                    {copiedIndex === index ? (
-                      <>
-                        <Check size={16} /> Copied
-                      </>
-                    ) : (
-                      <>
-                        <Copy size={16} /> Copy JSON
-                      </>
-                    )}
-                  </button>
-                </td>
+        <div className="table-responsive">
+          <table className="table table-striped table-bordered">
+            <thead className="table-light">
+              <tr>
+                <th style={{ width: "25%" }}>Timestamp</th>
+                <th style={{ width: "25%" }}>Title</th>
+                <th style={{ width: "15%" }}>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {entries.map((entry, index) => (
+                <tr key={index}>
+                  <td>{entry.timestamp}</td>
+                  <td>{entry.title}</td>
+
+                  <td>
+                    <button
+                      className="btn btn-outline-secondary btn-sm d-flex align-items-center gap-1"
+                      onClick={() => copyJsonToClipboard(entry.json, index)}
+                    >
+                      {copiedIndex === index ? (
+                        <>
+                          <Check size={16} /> Copied
+                        </>
+                      ) : (
+                        <>
+                          <Copy size={16} /> Copy JSON
+                        </>
+                      )}
+                    </button>
+                  </td>
+
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
+
   );
 };
 
