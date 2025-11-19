@@ -30,7 +30,20 @@ const ImageTileGallery = ({ injectedJson }: { injectedJson?: string }) => {
 
   const handleJsonSubmit = () => {
     try {
-      const parsed = JSON.parse(jsonInput);
+      let parsed;
+
+      try {
+        parsed = JSON.parse(jsonInput);
+      } catch (e) {
+        throw new Error("Invalid JSON format. Please enter valid JSON.");
+      }
+
+      // Reject JSON primitives like number, string, boolean, null
+      if (parsed === null || typeof parsed !== "object") {
+        throw new Error("JSON must be an object or an array.");
+      }
+
+      // At this point, parsed is array or object
       const dataArray = Array.isArray(parsed) ? parsed : [parsed];
       setData(dataArray);
       setError('');
@@ -142,29 +155,32 @@ const ImageTileGallery = ({ injectedJson }: { injectedJson?: string }) => {
               <h2 className="input-title">Load JSON Data</h2>
             </div>
 
+            {/* Title Input */}
+            <input
+              type="text"
+              className="form-control form-control-lg mb-3 rounded-pill shadow-sm stylish-input"
+              placeholder="Enter Title..."
+              value={jsonInputTitle}
+              onChange={(e) => setJsonInputTitle(e.target.value)}
+              required
+            />
 
+            {/* JSON Textarea */}
             <textarea
               value={jsonInput}
               onChange={(e) => setJsonInput(e.target.value)}
-              placeholder='Paste your JSON here, e.g.:
+              placeholder={`Paste your JSON here, e.g.:
 [
   {
     "defaultImageURL": "https://example.com/image.jpg",
     "isResized": false,
     "imageURLs": ["https://example.com/image.jpg"]
   }
-]'
+]`}
               className="json-textarea"
             />
 
-            <input
-              value={jsonInputTitle}
-              onChange={(e) => setJsonInputTitle(e.target.value)}
-              placeholder="Title"
-              className="json-input"
-              required
-            />
-
+            {/* Error Block */}
             {error && (
               <div className="error-message">
                 <AlertCircle size={20} />
@@ -172,7 +188,8 @@ const ImageTileGallery = ({ injectedJson }: { injectedJson?: string }) => {
               </div>
             )}
 
-            <div className="d-flex gap-2">
+            {/* Buttons with Spacing */}
+            <div className="d-flex gap-3 mt-2">
               <button onClick={handleJsonSubmit} className="btn-load">
                 Load Gallery
               </button>
@@ -181,8 +198,6 @@ const ImageTileGallery = ({ injectedJson }: { injectedJson?: string }) => {
                 Save Gallery
               </button>
             </div>
-
-
           </div>
         )}
 
@@ -190,9 +205,11 @@ const ImageTileGallery = ({ injectedJson }: { injectedJson?: string }) => {
         {data.length > 0 && (
           <div className="gallery-grid">
             {data.map((item: any, index) => {
-              const defaultImageURL = item?.defaultImageURL ?? '';
-              const imageURLs = Array.isArray(item?.imageURLs) ? item.imageURLs : [];
-              const firstImageURL = imageURLs[0] ?? '';
+              const defaultImageURL = item?.defaultImageURL ?? "";
+              const imageURLs = Array.isArray(item?.imageURLs)
+                ? item.imageURLs
+                : [];
+              const firstImageURL = imageURLs[0] ?? "";
 
               return (
                 <div key={index} className="gallery-card">
@@ -222,13 +239,11 @@ const ImageTileGallery = ({ injectedJson }: { injectedJson?: string }) => {
                     >
                       {copiedIndex === index ? (
                         <>
-                          <Check size={18} />
-                          Copied!
+                          <Check size={18} /> Copied!
                         </>
                       ) : (
                         <>
-                          <Copy size={18} />
-                          Copy URL
+                          <Copy size={18} /> Copy URL
                         </>
                       )}
                     </button>
@@ -249,9 +264,11 @@ const ImageTileGallery = ({ injectedJson }: { injectedJson?: string }) => {
           </div>
         )}
       </div>
-      <ToastContainer />
 
+      {/* Toasts */}
+      <ToastContainer />
     </div>
+
 
   );
 };

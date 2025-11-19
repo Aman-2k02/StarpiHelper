@@ -12,7 +12,13 @@ function App() {
       <div className="page-layout">
         <ImageTileGallery />
         <VideoTileGallery />
-        <GalleryViewer/>
+        <GalleryViewer />
+        <footer style={{ textAlign: "center", padding: "15px", fontSize: "14px", color: "#666" }}>
+          © 2025–2026 Synoverge Technologies. All rights reserved.<br />
+          Credits: Aman Khan (<a href="mailto:aman.khan@synoverge.com">aman.khan@synoverge.com</a>),
+          Adarsh Jain (<a href="mailto:adarsh.jain@synoverge.com">adarsh.jain@synoverge.com</a>)
+        </footer>
+
       </div>
     </>
   )
