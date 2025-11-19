@@ -71,6 +71,7 @@ const ImageTileGallery = ({ injectedJson }: { injectedJson?: string }) => {
       toast.success("Gallery Loaded Successfully!", {
         position: "top-right",
       });
+      setJsonInputTitle('');
     } catch {
       toast.error("Invalid JSON format!", { position: "top-right" });
 
@@ -189,7 +190,7 @@ const ImageTileGallery = ({ injectedJson }: { injectedJson?: string }) => {
             )}
 
             {/* Buttons with Spacing */}
-            <div className="d-flex gap-3 mt-2">
+            <div className="d-flex mt-2">
               <button onClick={handleJsonSubmit} className="btn-load">
                 Load Gallery
               </button>
@@ -198,6 +199,9 @@ const ImageTileGallery = ({ injectedJson }: { injectedJson?: string }) => {
                 Save Gallery
               </button>
             </div>
+
+
+
           </div>
         )}
 

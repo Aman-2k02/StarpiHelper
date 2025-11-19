@@ -52,3 +52,24 @@
   border-color: #6a89ff;
   box-shadow: 0 0 12px rgba(106, 137, 255, 0.4);
 }
+
+
+.btn-load {
+  background-color: #2196f3; /* Blue background */
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px; /* Normal rounded corners */
+  margin-right: 10px; /* Space between buttons */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-load:last-child {
+  margin-right: 0; /* No margin on last button */
+}
+
+/* Optional: hover effect */
+.btn-load:hover {
+  background-color: #1976d2;
+}
