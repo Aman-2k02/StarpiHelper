@@ -28,6 +28,48 @@ const ImageTileGallery = ({ injectedJson }: { injectedJson?: string }) => {
     }
   }, [injectedJson]);
 
+
+  function mergeJsonArrays(arrays: any[]) {
+    let merged: any[] = [];
+    arrays.forEach(arr => {
+      if (Array.isArray(arr)) {
+        merged = merged.concat(arr);
+      }
+    });
+    return merged;
+  }
+
+  const handleJsonParse = () => {
+    try {
+      if (jsonInput.trim() === "") {
+        toast.error("JSON input cannot be empty!", { position: "top-right" });
+        return;
+      }
+      const lines = jsonInput.split("\n");
+
+      const parsedArrays: any[] = [];
+
+      for (let line of lines) {
+        line = line.trim();
+        if (!line) continue; // skip empty lines
+        parsedArrays.push(JSON.parse(line));
+      }
+
+      const merged = mergeJsonArrays(parsedArrays);
+
+      console.log("merged :", merged);
+
+      setData(merged);
+      setError("");
+      setShowInput(false);
+
+    } catch (err) {
+      console.error(err);
+      toast.error("Invalid JSON format!", { position: "top-right" });
+    }
+  };
+
+
   const handleJsonSubmit = () => {
     try {
       let parsed;
@@ -197,6 +239,10 @@ const ImageTileGallery = ({ injectedJson }: { injectedJson?: string }) => {
 
               <button onClick={handleJsonSave} className="btn-load">
                 Save Gallery
+              </button>
+
+              <button onClick={handleJsonParse} className="btn-load">
+                Parse Json
               </button>
             </div>
 
